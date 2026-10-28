@@ -1,0 +1,36 @@
+Develop a Servlet application for a bakery that accepts cake quantity
+and price and calculates the total bill.
+Technology: Servlet
+Where to write: src/java/BakeryServlet.java
+Easy explanation: The bill equals quantity multiplied by price per cake.
+Code
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+@WebServlet("/bakery")
+public class BakeryServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        out.println("<h2>Simple Form</h2>");
+        out.println("<form method='post'>");
+        out.println("<label>Cake quantity: <input type='number' name='qty' required></label><br>");
+        out.println("<label>Price per cake: <input type='number' name='price' required></label><br>");
+        out.println("<button type='submit'>Submit</button></form>");
+    }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        response.setContentType("text/html;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int qty=Integer.parseInt(request.getParameter("qty"));
+        double price=Double.parseDouble(request.getParameter("price"));
+        if(qty<0 || price<0) out.println("Values cannot be negative");
+        else out.println("Total bill = Rs. "+(qty*price));
+    }
+}
+Sample output: Quantity 3, price 250 -> Total bill = Rs. 750.0
+How to run: Open `/bakery`, enter quantity and unit price.
+Viva question: How is the total bill calculated?
+Viva answer: Quantity multiplied by price per item

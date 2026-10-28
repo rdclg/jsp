@@ -1,0 +1,33 @@
+Create a JPA guestbook application to store and retrieve visitor details
+and comments.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/GuestComment.java` and `src/java/GuestCommentBean.java`; configure `AppPU`
+Easy explanation: Each guestbook row stores a visitor name and comment.
+Code
+// File: GuestComment.java
+import javax.persistence.*;
+@Entity
+public class GuestComment {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String visitorName;
+    private String comment;
+    public GuestComment() { }
+    public GuestComment(String n,String c) { visitorName=n; comment=c; }
+    public Long getId(){return id;}
+    public String getVisitorName(){return visitorName;}
+    public String getComment(){return comment;}
+}
+// File: GuestCommentBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class GuestCommentBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void add(String n,String c){ em.persist(new GuestComment(n,c)); }
+    public List<GuestComment> all(){ return em.createQuery("SELECT g FROM GuestComment g",GuestComment.class).getResultList(); }
+}
+Sample output: Saved: Riya - Nice website!; retrieved in the guestbook list.
+How to run: Create `GuestComment.java` and `GuestCommentBean.java`; configure `AppPU`; call `add()` and `all()`.
+Viva question: What is a guestbook?
+Viva answer: A page where visitors leave their names and comments.

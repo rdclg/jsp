@@ -1,0 +1,35 @@
+Create a JPA-based bookshop application to insert and display book
+details.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/ShopBook.java` and `src/java/ShopBookBean.java`; configure `AppPU`
+Easy explanation: The bookshop saves and lists title, author and price for each book.
+Code
+// File: ShopBook.java
+import javax.persistence.*;
+@Entity
+public class ShopBook {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String title;
+    private String author;
+    private double price;
+    public ShopBook() { }
+    public ShopBook(String t,String a,double p) { title=t; author=a; price=p; }
+    public Long getId(){return id;}
+    public String getTitle(){return title;}
+    public String getAuthor(){return author;}
+    public double getPrice(){return price;}
+}
+// File: ShopBookBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class ShopBookBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String t,String a,double p){ em.persist(new ShopBook(t,a,p)); }
+    public List<ShopBook> all(){ return em.createQuery("SELECT b FROM ShopBook b",ShopBook.class).getResultList(); }
+}
+Sample output: Java Basics, A. Kumar, 250.0.
+How to run: Create `ShopBook.java` and `ShopBookBean.java`; configure `AppPU`; call save and all.
+Viva question: What is the role of `persist()`?
+Viva answer: It tells JPA to insert a new entity into the data

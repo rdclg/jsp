@@ -1,0 +1,16 @@
+Create a JSP application using EL to display product details received
+from another page, including product ID, name, quantity and price.
+Technology: JSP EL
+Where to write: `Web Pages/productForm.html` and `Web Pages/productDetails.jsp`
+Easy explanation: EL prints each product field sent by the first page.
+Code
+<!-- File: productForm.html -->
+<form action="productDetails.jsp">Product ID <input name="id"><br>Name <input name="name"><br>
+Quantity <input name="quantity"><br>Price <input name="price"><br><button>Show</button></form>
+<!-- File: productDetails.jsp -->
+<h2>Product Details</h2>
+ID: ${param.id}<br>Name: ${param.name}<br>Quantity: ${param.quantity}<br>Price: Rs. ${param.price}
+Sample output: ID: P01; Name: Pen; Quantity: 10; Price: Rs. 5
+How to run: Open productForm.html, enter product details and submit.
+Viva question: Can EL display request parameters?
+Viva answer: Yes, with the `param` implicit map

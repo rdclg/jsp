@@ -1,0 +1,32 @@
+ Create a JPA application to store product names and quantities.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/Product.java` and `src/java/ProductBean.java`; configure `AppPU`
+Easy explanation: The Product entity stores a product name and available quantity.
+Code
+// File: Product.java
+import javax.persistence.*;
+@Entity
+public class Product {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String name;
+    private int quantity;
+    public Product() { }
+    public Product(String n,int q) { name=n; quantity=q; }
+    public Long getId(){return id;}
+    public String getName(){return name;}
+    public int getQuantity(){return quantity;}
+}
+// File: ProductBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class ProductBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String n,int q){ em.persist(new Product(n,q)); }
+    public List<Product> all(){ return em.createQuery("SELECT p FROM Product p",Product.class).getResultList(); }
+}
+Sample output: Saved: Pen, quantity 100.
+How to run: Create `Product.java` and `ProductBean.java`; configure `AppPU`, then call save and all.
+Viva question: What is a primary key?
+Viva answer: A field that uniquely identifies each database row

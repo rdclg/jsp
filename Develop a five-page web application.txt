@@ -1,0 +1,36 @@
+ Develop a five-page web application using any two or three Java EE
+technologies.
+Technology: Servlet + JSP + Session
+Where to write: Create the JSP pages in Web Pages and servlet classes in src/java.
+Easy explanation: This mini portal uses JSP for pages, Servlets for login/logout processing and a session to remember the
+name.
+Code
+<!-- Page 1: index.jsp -->
+<h2>Student Portal</h2><a href="login.jsp">Login</a>
+<!-- Page 2: login.jsp -->
+<form action="login" method="post">Name: <input name="name"><button>Login</button></form>
+// Page 3: LoginServlet.java
+import java.io.*; import javax.servlet.annotation.WebServlet; import javax.servlet.http.*;
+@WebServlet("/login") public class LoginServlet extends HttpServlet {
+ protected void doPost(HttpServletRequest req,HttpServletResponse res)throws IOException {
+  req.getSession().setAttribute("name",req.getParameter("name")); res.sendRedirect("welcome.jsp");
+ }
+}
+<!-- Page 4: welcome.jsp -->
+<h2>Hello ${sessionScope.name}</h2><a href="profile.jsp">Profile</a> | <a href="logout">Logout</a>
+<!-- Page 5: profile.jsp -->
+<h2>Profile page</h2>Name: ${sessionScope.name}
+<a href="about.jsp">About</a>
+<!-- Also create about.jsp as the fifth visible content page. -->
+<h2>About the Student Portal</h2><p>Simple JSP and Servlet example.</p>
+// LogoutServlet.java (extra controller class)
+import java.io.*; import javax.servlet.annotation.WebServlet; import javax.servlet.http.*;
+@WebServlet("/logout") public class LogoutServlet extends HttpServlet {
+ protected void doGet(HttpServletRequest req,HttpServletResponse res)throws IOException {
+  req.getSession().invalidate(); res.sendRedirect("index.jsp");
+ }
+}
+Sample output: Pages: index.jsp, login.jsp, welcome.jsp, profile.jsp and about.jsp. Logout returns to index.jsp.
+How to run: Run `index.jsp`, submit a name on login.jsp, visit profile.jsp and test Logout.
+Viva question: Name two Java EE web technologies used here.
+Viva answer: Servlets and JSP

@@ -1,0 +1,35 @@
+ Create a JPA application to store and retrieve book details.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/Book.java` and `src/java/BookBean.java`; configure `AppPU`
+Easy explanation: Book title, author and price are stored as columns. The bean saves and lists books.
+Code
+// File: Book.java
+import javax.persistence.*;
+@Entity
+public class Book {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String title;
+    private String author;
+    private double price;
+    public Book() { }
+    public Book(String t,String a,double p) { title=t; author=a; price=p; }
+    public Long getId(){return id;}
+    public String getTitle(){return title;}
+    public String getAuthor(){return author;}
+    public double getPrice(){return price;}
+}
+// File: BookBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class BookBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String t,String a,double p){ em.persist(new Book(t,a,p)); }
+    public List<Book> all(){ return em.createQuery("SELECT b FROM Book b",Book.class).getResultList(); }
+}
+Sample output: Saved: Java Basics, A. Kumar, 250; Retrieved book list contains the saved row.
+How to run: Create `Book.java` and `BookBean.java` in `src/java`; configure `AppPU`; call `save()` and `all()` from a servlet or
+EJB client.
+Viva question: What is an entity?
+Viva answer: A Java class mapped to a database table

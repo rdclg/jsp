@@ -1,0 +1,35 @@
+ Create a JPA application to store course details and demonstrate ORM
+mapping.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/Course.java` and `src/java/CourseBean.java`; configure `AppPU`
+Easy explanation: ORM maps the Course Java object to a database table.
+Code
+// File: Course.java
+import javax.persistence.*;
+@Entity
+public class Course {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String courseName;
+    private int durationMonths;
+    public Course() { }
+    public Course(String n,int d) { courseName=n; durationMonths=d; }
+    public Long getId(){return id;}
+    public String getCourseName(){return courseName;}
+    public int getDurationMonths(){return durationMonths;}
+}
+// File: CourseBean.java
+Page 40
+Java Enterprise QB - Easy Code, Output & Viva
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class CourseBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String n,int d){ em.persist(new Course(n,d)); }
+    public List<Course> all(){ return em.createQuery("SELECT c FROM Course c",Course.class).getResultList(); }
+}
+Sample output: Course: Java Web, duration: 6 months.
+How to run: Create `Course.java` and `CourseBean.java`; configure `AppPU`; call save and all.
+Viva question: What is ORM?
+Viva answer: Object-Relational Mapping; it maps Java objects to database tables

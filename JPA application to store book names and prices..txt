@@ -1,0 +1,32 @@
+Create a JPA application to store book names and prices.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/PricedBook.java` and `src/java/PricedBookBean.java`; configure `AppPU`
+Easy explanation: Each row saves a book name and its price.
+Code
+// File: PricedBook.java
+import javax.persistence.*;
+@Entity
+public class PricedBook {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String name;
+    private double price;
+    public PricedBook() { }
+    public PricedBook(String n,double p) { name=n; price=p; }
+    public Long getId(){return id;}
+    public String getName(){return name;}
+    public double getPrice(){return price;}
+}
+// File: PricedBookBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class PricedBookBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String n,double p){ em.persist(new PricedBook(n,p)); }
+    public List<PricedBook> all(){ return em.createQuery("SELECT b FROM PricedBook b",PricedBook.class).getResultList(); }
+}
+Sample output: Saved: Web Design, price 300.0.
+How to run: Create `PricedBook.java` and `PricedBookBean.java`; configure `AppPU`; call save and all.
+Viva question: How does JPA retrieve all books?
+Viva answer: With a query such as `SELECT b FROM PricedBook b`.

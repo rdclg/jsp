@@ -1,0 +1,27 @@
+Develop a JSP application demonstrating JSP Action Tags.
+Technology: JSP Action Tags + JavaBean
+Where to write: `Web Pages/action.jsp`, `Web Pages/footer.jsp`, `src/java/app/StudentBean.java`
+Easy explanation: The JSP action tags create a bean, set and get its property, and include another JSP page.
+Code
+<!-- File: action.jsp -->
+<jsp:useBean id="student" class="app.StudentBean" scope="request" />
+<jsp:setProperty name="student" property="name" value="Riya" />
+<h2>Action Tag Demo</h2>
+Student name: <jsp:getProperty name="student" property="name" />
+<hr>
+<jsp:include page="footer.jsp" />
+<!-- File: app/StudentBean.java -->
+package app;
+public class StudentBean {
+    private String name;
+    public StudentBean() { }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+}
+<!-- File: footer.jsp -->
+<p>End of page.</p>
+Sample output: Student name: Riya
+End of page.
+How to run: Create the three files at the paths shown and run `action.jsp`.
+Viva question: Name one JSP action tag.
+Viva answer: `jsp:include`, `jsp:useBean`, `jsp:setProperty` or `jsp:getProperty`.

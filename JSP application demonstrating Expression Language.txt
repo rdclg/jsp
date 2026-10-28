@@ -1,0 +1,22 @@
+ Create a JSP application demonstrating Expression Language (EL).
+Technology: JSP Expression Language (EL)
+Where to write: `Web Pages/el.jsp`
+Easy explanation: EL reads values without Java print statements. Here it displays studentName, marks and the web-app
+context path.
+Code
+<!-- File: el.jsp -->
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%
+    request.setAttribute("studentName", "Riya");
+    request.setAttribute("marks", 85);
+%>
+<h2>Expression Language Demo</h2>
+Student name: ${studentName}<br>
+Marks: ${marks}<br>
+Context path: ${pageContext.request.contextPath}
+Sample output: Student name: Riya
+Marks: 85
+Context path: /YourProject
+How to run: Save as `el.jsp` in Web Pages and run it on the server.
+Viva question: What is JSP EL?
+Viva answer: A simple way to access data in JSP using expressions such as `${studentName}`

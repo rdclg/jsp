@@ -1,0 +1,33 @@
+Develop a Marks Entry application using EJB to accept student details
+and marks, store them in a database, and retrieve and display the records.
+Technology: EJB + JPA
+Where to write: `src/java/Mark.java` and `src/java/MarksBean.java`; configure `META-INF/persistence.xml` as explained in
+setup
+Easy explanation: The entity represents a marks row. The EJB saves a Mark object and retrieves all saved marks.
+Code
+// File: Mark.java
+import javax.persistence.*;
+@Entity
+public class Mark {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String studentName; private int marks;
+    public Mark() { }
+    public Mark(String n,int m){studentName=n;marks=m;}
+    public Long getId(){return id;} public String getStudentName(){return studentName;}
+    public int getMarks(){return marks;}
+}
+// File: MarksBean.java
+import java.util.*; import javax.ejb.Stateless; import javax.persistence.*;
+@Stateless
+public class MarksBean {
+    @PersistenceContext(unitName="AppPU") EntityManager em;
+    public void add(String name,int marks){ em.persist(new Mark(name,marks)); }
+    public List<Mark> all(){ return em.createQuery("SELECT m FROM Mark m",Mark.class).getResultList(); }
+}
+Sample output: Saved: Riya, 88
+Retrieved record: Riya - 88
+Page 33
+Java Enterprise QB - Easy Code, Output & Viva
+How to run: Deploy on Payara/GlassFish, configure `AppPU`, call `marksBean.add("Riya",88)` and print `marksBean.all()`.
+Viva question: What does EntityManager do?
+Viva answer: It saves, finds, updates and removes entity objects in the database

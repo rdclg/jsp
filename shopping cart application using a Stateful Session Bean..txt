@@ -1,0 +1,20 @@
+Develop a shopping cart application using a Stateful Session Bean.
+Technology: EJB Stateful Bean
+Where to write: `src/java/ShoppingCartBean.java`
+Easy explanation: A stateful bean remembers its list of items for a particular client session.
+Code
+import javax.ejb.Stateful;
+import java.util.*;
+@Stateful
+public class ShoppingCartBean {
+    private List<String> items = new ArrayList<>();
+    public void add(String item){ items.add(item); }
+    public void remove(String item){ items.remove(item); }
+    public List<String> getItems(){ return new ArrayList<>(items); }
+    public int count(){ return items.size(); }
+}
+Sample output: Items: [Book, Pen]
+Count: 2
+How to run: Deploy on Payara/GlassFish and call add/remove/getItems from a client or servlet.
+Viva question: What is a stateful bean?
+Viva answer: A bean that keeps conversational state for one client.

@@ -1,0 +1,38 @@
+Create a JPA application demonstrating ORM associations.
+Technology: JPA ORM association
+Where to write: Create `Author.java` and `BookTitle.java`; add a service bean with `@PersistenceContext` to save `Author`.
+Easy explanation: One author can have many books (`@OneToMany`). Each book points back to one author
+(`@ManyToOne`).
+Code
+// File: Author.java
+import java.util.*; import javax.persistence.*;
+@Entity public class Author {
+ @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+ private String name;
+ @OneToMany(mappedBy="author", cascade=CascadeType.ALL) private List<BookTitle> books=new ArrayList<>();
+ public Author(){} public Author(String n){name=n;}
+ public void addBook(BookTitle b){ books.add(b); b.setAuthor(this); }
+ public String getName(){return name;} public List<BookTitle> getBooks(){return books;}
+}
+// File: BookTitle.java
+import javax.persistence.*;
+@Entity public class BookTitle {
+ @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+ private String title;
+ @ManyToOne private Author author;
+ public BookTitle(){} public BookTitle(String t){title=t;}
+ public void setAuthor(Author a){author=a;} public String getTitle(){return title;}
+}
+Page 39
+Java Enterprise QB - Easy Code, Output & Viva
+// File: AuthorBean.java
+import javax.ejb.Stateless; import javax.persistence.*;
+@Stateless public class AuthorBean {
+ @PersistenceContext(unitName="AppPU") EntityManager em;
+ public void saveDemo(){ Author a=new Author("A. Kumar"); a.addBook(new BookTitle("Java Basics")); em.persist(a); }
+}
+Sample output: Author: A. Kumar
+Book: Java Basics
+How to run: Configure `AppPU`, persist an Author with a BookTitle, and then query the author and its books.
+Viva question: What is a One-to-Many relationship?
+Viva answer: One row in one table can be related to several rows in another table

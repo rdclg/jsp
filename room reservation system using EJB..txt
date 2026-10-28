@@ -1,0 +1,21 @@
+ Develop a room reservation system using EJB.
+Technology: EJB Stateless Bean
+Where to write: `src/java/RoomReservationBean.java`
+Easy explanation: The bean checks whether a room is already in the sample reservation set. This tiny demo keeps data in
+memory; a real system should use a database.
+Code
+import javax.ejb.Stateless;
+import java.util.HashSet;
+import java.util.Set;
+@Stateless
+public class RoomReservationBean {
+    private static final Set<String> demoReservations = new HashSet<>();
+    public String reserve(String room, String guest) {
+        if (!demoReservations.add(room)) return "Room already reserved";
+        return "Room " + room + " reserved for " + guest;
+    }
+}
+Sample output: Room 101 reserved for Riya
+How to run: Deploy on Payara/GlassFish and call `reserve("101","Riya")` from a servlet.
+Viva question: What is a business method?
+Viva answer: A method that performs the application’s main work.

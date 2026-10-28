@@ -1,0 +1,33 @@
+ Create a JPA application demonstrating One-to-One mapping.
+Technology: JPA One-to-One mapping
+Where to write: Create `StudentProfile.java` and `StudentInfo.java`; configure `AppPU`.
+Easy explanation: `@OneToOne` means one student record is linked to one profile record in this example.
+Code
+// File: StudentProfile.java
+import javax.persistence.*;
+@Entity public class StudentProfile {
+ @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+ private String address;
+ public StudentProfile(){} public StudentProfile(String a){address=a;}
+ public String getAddress(){return address;}
+}
+// File: StudentInfo.java
+import javax.persistence.*;
+@Entity public class StudentInfo {
+ @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+ private String name;
+ @OneToOne(cascade=CascadeType.ALL) private StudentProfile profile;
+ public StudentInfo(){} public StudentInfo(String n,StudentProfile p){name=n;profile=p;}
+ public String getName(){return name;} public StudentProfile getProfile(){return profile;}
+}
+// File: StudentInfoBean.java
+import javax.ejb.Stateless; import javax.persistence.*;
+@Stateless public class StudentInfoBean {
+ @PersistenceContext(unitName="AppPU") EntityManager em;
+ public void saveDemo(){ em.persist(new StudentInfo("Riya", new StudentProfile("Mumbai"))); }
+}
+Sample output: Student: Riya
+Address: Mumbai
+How to run: Deploy on Payara/GlassFish and save a StudentInfo object with a StudentProfile object.
+Viva question: What does @OneToOne mean?
+Viva answer: It maps one entity to one related entity.

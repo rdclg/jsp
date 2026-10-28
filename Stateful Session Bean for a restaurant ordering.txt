@@ -1,0 +1,20 @@
+ Create a Stateful Session Bean for a restaurant ordering system that
+allows customers to add and remove food items and calculate the total bill.
+Technology: EJB Stateful Bean
+Where to write: `src/java/RestaurantOrderBean.java`
+Easy explanation: The stateful bean remembers each customer’s order, can remove an item and totals the prices.
+Code
+import javax.ejb.Stateful;
+import java.util.*;
+@Stateful
+public class RestaurantOrderBean {
+    private Map<String,Double> order = new LinkedHashMap<>();
+    public void add(String item,double price){ order.put(item,price); }
+    public void remove(String item){ order.remove(item); }
+    public double total(){ double sum=0; for(double p:order.values()) sum+=p; return sum; }
+    public Set<String> items(){ return order.keySet(); }
+}
+Sample output: Add Pizza=200 and Juice=60 -> Total = 260.0; remove Juice -> Total = 200.0
+How to run: Deploy and call `add`, `remove` and `total` from a servlet or client.
+Viva question: Why use Stateful Session Bean here?
+Viva answer: Because each customer’s order must be remembered across several actions.

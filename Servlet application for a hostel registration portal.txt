@@ -1,0 +1,21 @@
+Develop a Servlet application for a hostel registration portal that stores
+student details in a session and displays them on a confirmation page.
+Technology: Servlet + Session + JSP
+Where to write: `src/java/HostelServlet.java` and `Web Pages/hostelConfirm.jsp`
+Easy explanation: The servlet keeps the name and room number in a session and redirects to a confirmation JSP.
+Code
+// File: HostelServlet.java
+import java.io.*; import javax.servlet.*; import javax.servlet.annotation.WebServlet; import javax.servlet.http.*;
+@WebServlet("/hostel") public class HostelServlet extends HttpServlet {
+ protected void doGet(HttpServletRequest q,HttpServletResponse r)throws IOException {
+  r.setContentType("text/html"); r.getWriter().println("<form method='post'>Name <input name='name'> Room <input name='room'><button>Register</button></form>");
+ }
+ protected void doPost(HttpServletRequest q,HttpServletResponse r)throws IOException {
+  HttpSession s=q.getSession(); s.setAttribute("hostelName",q.getParameter("name")); s.setAttribute("room",q.getParameter("room"));
+  r.sendRedirect("hostelConfirm.jsp");
+ }
+}
+Sample output: Hostel confirmation: Student Riya, Room 12
+How to run: Create hostelConfirm.jsp with `${sessionScope.hostelName}` and `${sessionScope.room}`. Open `/hostel`.
+Viva question: Why use a session for registration details?
+Viva answer: So the details can be read on another page during the same visit.

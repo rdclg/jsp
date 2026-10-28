@@ -1,0 +1,27 @@
+Create a JPA-based student management system to insert, display and
+update student details.
+Technology: JPA CRUD
+Where to write: `src/java/ManagedStudent.java` and `src/java/StudentManagerBean.java`
+Easy explanation: The service inserts students, lists all students and updates a name when the roll number exists.
+Code
+// File: ManagedStudent.java
+import javax.persistence.*;
+@Entity public class ManagedStudent {
+ @Id private int rollNo; private String name; private int age;
+ public ManagedStudent(){} public ManagedStudent(int r,String n,int a){rollNo=r;name=n;age=a;}
+ public int getRollNo(){return rollNo;} public String getName(){return name;} public int getAge(){return age;}
+ public void setName(String n){name=n;} public void setAge(int a){age=a;}
+}
+// File: StudentManagerBean.java
+import java.util.*; import javax.ejb.Stateless; import javax.persistence.*;
+@Stateless public class StudentManagerBean {
+ @PersistenceContext(unitName="AppPU") EntityManager em;
+ public void add(int r,String n,int a){em.persist(new ManagedStudent(r,n,a));}
+ public List<ManagedStudent> all(){return em.createQuery("SELECT s FROM ManagedStudent s",ManagedStudent.class).getResultList();}
+ public void updateName(int r,String n){ManagedStudent s=em.find(ManagedStudent.class,r); if(s!=null)s.setName(n);}
+}
+Sample output: Inserted student 12, Riya, age 14
+Updated name: Riya Shaikh
+How to run: Configure `AppPU`; call `add`, `all` and `updateName` from a servlet or client.
+Viva question: What does CRUD stand for?
+Viva answer: Create, Read, Update and Delete

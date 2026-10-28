@@ -1,0 +1,27 @@
+Create a JPA-based mobile shop application to insert, display and
+update mobile phone details.
+Technology: JPA CRUD
+Where to write: `src/java/MobilePhone.java` and `src/java/MobileShopBean.java`
+Easy explanation: The model number is the primary key. The bean inserts, lists and updates phone prices.
+Code
+// File: MobilePhone.java
+import javax.persistence.*;
+@Entity public class MobilePhone {
+ @Id private String modelNo; private String brand; private double price;
+ public MobilePhone(){} public MobilePhone(String m,String b,double p){modelNo=m;brand=b;price=p;}
+ public String getModelNo(){return modelNo;} public String getBrand(){return brand;} public double getPrice(){return price;}
+ public void setPrice(double p){price=p;}
+}
+// File: MobileShopBean.java
+import java.util.*; import javax.ejb.Stateless; import javax.persistence.*;
+@Stateless public class MobileShopBean {
+ @PersistenceContext(unitName="AppPU") EntityManager em;
+ public void add(String m,String b,double p){em.persist(new MobilePhone(m,b,p));}
+ public List<MobilePhone> all(){return em.createQuery("SELECT m FROM MobilePhone m",MobilePhone.class).getResultList();}
+ public void updatePrice(String m,double p){MobilePhone x=em.find(MobilePhone.class,m);if(x!=null)x.setPrice(p);}
+}
+Sample output: Added: M01, ExampleBrand, Rs. 15000
+Updated price: Rs. 14000
+How to run: Configure `AppPU`; call add, all and updatePrice.
+Viva question: What does em.find() do?
+Viva answer: It searches for an entity using its primary key

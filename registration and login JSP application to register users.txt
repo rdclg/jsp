@@ -1,0 +1,31 @@
+Create a registration and login JSP application to register users and
+authenticate their credentials.
+Technology: JSP + JDBC
+Where to write: `Web Pages/register.jsp`, `Web Pages/login.jsp`; reuse `users` table
+Easy explanation: Registration inserts a row; login checks for a matching row. This classroom example stores a plain
+password and should not be used for a real website.
+Code
+<!-- File: register.jsp -->
+<%@ page import="java.sql.*" %>
+<% if("POST".equalsIgnoreCase(request.getMethod())) {
+  try(Connection c=app.DB.getConnection(); PreparedStatement p=c.prepareStatement("INSERT INTO users(username,password,email,country) VALUES(?,?,?,?)")) {
+    p.setString(1,request.getParameter("username")); p.setString(2,request.getParameter("password"));
+    p.setString(3,request.getParameter("email")); p.setString(4,request.getParameter("country")); p.executeUpdate();
+    out.println("Registered successfully");
+  } catch(Exception e) { out.println("Error: "+e.getMessage()); }
+} %>
+<form method="post">Username <input name="username"><br>Password <input type="password" name="password"><br>Email <input name="email"><br>Country <input name="country"><br><button>Register</button></form>
+<!-- File: login.jsp -->
+<%@ page import="java.sql.*" %>
+<% if("POST".equalsIgnoreCase(request.getMethod())) {
+  try(Connection c=app.DB.getConnection(); PreparedStatement p=c.prepareStatement("SELECT username FROM users WHERE username=? AND password=?")) {
+    p.setString(1,request.getParameter("username")); p.setString(2,request.getParameter("password"));
+    try(ResultSet r=p.executeQuery()) { out.println(r.next()?"Welcome "+r.getString(1):"Login failed"); }
+  } catch(Exception e) { out.println("Error: "+e.getMessage()); }
+} %>
+<form method="post">Username <input name="username"><br>Password <input type="password" name="password"><br><button>Login</button></form>
+Sample output: Registered successfully
+Welcome student
+How to run: Create the users table, register first, then open login.jsp.
+Viva question: What is the difference between registration and login?
+Viva answer: Registration creates an account; login checks an existing account.

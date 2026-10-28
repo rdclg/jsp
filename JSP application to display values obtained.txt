@@ -1,0 +1,23 @@
+Develop a JSP application to display values obtained from different
+implicit objects.
+Technology: JSP
+Where to write: `Web Pages/implicit.jsp`
+Easy explanation: JSP provides objects such as request, response, session, application, out and page without needing to
+declare them.
+Code
+<!-- File: implicit.jsp -->
+<html><body>
+<h2>JSP Implicit Objects</h2>
+Request method: <%= request.getMethod() %><br>
+Server: <%= application.getServerInfo() %><br>
+Session ID: <%= session.getId() %><br>
+Page name: <%= page.getClass().getName() %><br>
+<% out.println("Printed using the out object"); %>
+</body></html>
+Sample output: Request method: GET
+Server: Apache Tomcat...
+Session ID: (generated value)
+Printed using the out object
+How to run: Run `implicit.jsp` directly from the web project.
+Viva question: Name any two JSP implicit objects.
+Viva answer: `request` and `session`

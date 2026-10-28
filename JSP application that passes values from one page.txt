@@ -1,0 +1,43 @@
+Develop a JSP application that passes values from one page to another
+and validates name, age, hobbies, email and gender.
+Technology: JSP form validation
+Where to write: `Web Pages/profileForm.jsp` and `Web Pages/profileResult.jsp`
+Easy explanation: The first JSP collects values. The second JSP checks important fields and displays them. For real
+applications, escape displayed input to avoid unsafe HTML.
+Code
+<!-- File: profileForm.jsp -->
+<form action="profileResult.jsp" method="post">
+  Name: <input name="name" required><br>
+  Age: <input name="age" type="number" min="1" required><br>
+  Hobbies: <input name="hobbies" required><br>
+  Email: <input name="email" type="email" required><br>
+  Gender: <select name="gender"><option>Female</option><option>Male</option><option>Other</option></select><br>
+  <button>Submit</button>
+</form>
+<!-- File: profileResult.jsp -->
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%
+String name=request.getParameter("name");
+String age=request.getParameter("age");
+String hobbies=request.getParameter("hobbies");
+String email=request.getParameter("email");
+String gender=request.getParameter("gender");
+if (name==null || name.trim().isEmpty() || email==null || !email.contains("@")
+    || age==null || age.isEmpty() || hobbies==null || hobbies.trim().isEmpty()
+    || gender==null || gender.trim().isEmpty()) {
+    out.println("Please enter all details correctly.");
+} else if (Integer.parseInt(age) < 1) {
+    out.println("Age must be positive.");
+} else {
+%>
+<h2>Profile received</h2>
+Name: <%= name %><br>Age: <%= age %><br>Hobbies: <%= hobbies %><br>
+Email: <%= email %><br>Gender: <%= gender %>
+<% } %>
+Sample output: Profile received
+Name: Riya; Age: 14; Hobbies: Reading; Email: riya@example.com; Gender: Female
+Page 23
+Java Enterprise QB - Easy Code, Output & Viva
+How to run: Open `profileForm.jsp`, fill in all fields and submit.
+Viva question: What is the purpose of the required attribute?
+Viva answer: It prevents the browser from submitting an empty field

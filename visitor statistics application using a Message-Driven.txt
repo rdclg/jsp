@@ -1,0 +1,38 @@
+ Develop a visitor statistics application using a Message-Driven Bean and
+Stateless Session Bean.
+Technology: EJB MDB + Stateless Bean
+Where to write: Create `VisitorStatsBean.java` and `VisitorMessageBean.java`; configure a JMS queue named
+`jms/VisitorQueue` in Payara/GlassFish.
+Easy explanation: The message-driven bean receives queue messages and calls a stateless bean to record the event. A JMS
+queue must be configured in the server first.
+Code
+// File: VisitorStatsBean.java
+import javax.ejb.Stateless;
+@Stateless
+public class VisitorStatsBean {
+    public void record(String message) {
+        System.out.println("Visitor event recorded: " + message);
+    }
+}
+// File: VisitorMessageBean.java
+import javax.ejb.MessageDriven;
+import javax.ejb.ActivationConfigProperty;
+import javax.ejb.EJB;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.TextMessage;
+@MessageDriven(activationConfig={
+ @ActivationConfigProperty(propertyName="destinationLookup", propertyValue="jms/VisitorQueue"),
+ @ActivationConfigProperty(propertyName="destinationType", propertyValue="javax.jms.Queue")
+})
+public class VisitorMessageBean implements MessageListener {
+    @EJB VisitorStatsBean stats;
+    public void onMessage(Message message) {
+        try { stats.record(((TextMessage)message).getText()); }
+        catch (Exception e) { e.printStackTrace(); }
+    }
+}
+Sample output: Server log: Visitor event recorded: New visitor
+How to run: Deploy on Payara/GlassFish after creating the JMS queue; send a text message to that queue to test it.
+Viva question: What does an MDB do?
+Viva answer: It receives messages asynchronously, commonly from a JMS queue

@@ -1,0 +1,27 @@
+ Create a currency converter using EJB to convert Indian Rupees into US
+Dollars, Euros and British Pounds.
+Technology: EJB Stateless Session Bean
+Where to write: Create `CurrencyBean.java` in a Java EE project. Deploy the project on Payara/GlassFish, not plain Tomcat.
+Easy explanation: A stateless bean contains a conversion method. The exchange values are fixed examples for
+demonstrating the code, not current rates.
+Code
+import javax.ejb.Stateless;
+@Stateless
+public class CurrencyBean {
+    // Example rates only. Update them before real use.
+    public double convert(double inr, String currency) {
+        switch (currency.toUpperCase()) {
+            case "USD": return inr / 83.0;
+            case "EUR": return inr / 90.0;
+            case "GBP": return inr / 105.0;
+            default: throw new IllegalArgumentException("Use USD, EUR or GBP");
+        }
+    }
+}
+// Example call from a Servlet:
+// @EJB CurrencyBean converter;
+// double dollars = converter.convert(8300, "USD");
+Sample output: 8300 INR -> 100.0 USD (using the sample rate 83 INR per USD)
+How to run: Deploy on Payara/GlassFish and inject with `@EJB CurrencyBean converter;` in a servlet or another bean.
+Viva question: What is an EJB?
+Viva answer: Enterprise JavaBeans are server-side components used for business l

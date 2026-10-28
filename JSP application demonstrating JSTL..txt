@@ -1,0 +1,23 @@
+ Create a JSP application demonstrating JSTL.
+Technology: JSP + JSTL
+Where to write: `Web Pages/jstl.jsp`; add JSTL 1.2 library to Libraries
+Easy explanation: JSTL provides tags like `c:forEach` and `c:out` to repeat and print values.
+Code
+<!-- File: jstl.jsp. Add JSTL 1.2 library to the project. -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.util.*" %>
+<%
+    List<String> names = Arrays.asList("Riya", "Aman", "Sara");
+    request.setAttribute("names", names);
+%>
+<h2>Students</h2>
+<c:forEach var="n" items="${names}">
+  <p><c:out value="${n}" /></p>
+</c:forEach>
+Sample output: Students
+Riya
+Aman
+Sara
+How to run: Add the JSTL library, then run `jstl.jsp`. If the tag library is missing, add the JSTL JAR to the project.
+Viva question: What is JSTL?
+Viva answer: JSP Standard Tag Library

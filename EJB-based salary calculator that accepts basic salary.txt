@@ -1,0 +1,18 @@
+ Develop an EJB-based salary calculator that accepts basic salary and
+allowances and calculates gross salary.
+Technology: EJB Stateless Bean
+Where to write: `src/java/SalaryBean.java`
+Easy explanation: Gross salary is the basic salary plus allowances before deductions.
+Code
+import javax.ejb.Stateless;
+@Stateless
+public class SalaryBean {
+    public double grossSalary(double basic, double allowances) {
+        if (basic < 0 || allowances < 0) throw new IllegalArgumentException("Salary cannot be negative");
+        return basic + allowances;
+    }
+}
+Sample output: Basic = 30000, allowances = 5000 -> Gross salary = 35000.0
+How to run: Deploy and call `salaryBean.grossSalary(30000,5000)`.
+Viva question: What is gross salary?
+Viva answer: Basic salary plus allowances before deductions

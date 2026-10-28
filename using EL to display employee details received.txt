@@ -1,0 +1,16 @@
+ Create a JSP application using EL to display employee details received
+from another page, including employee ID, name, department and designation.
+Technology: JSP EL
+Where to write: `Web Pages/employeeForm.html` and `Web Pages/employeeDetails.jsp`
+Easy explanation: The form sends employee data to another JSP, where EL prints each parameter.
+Code
+<!-- File: employeeForm.html -->
+<form action="employeeDetails.jsp">ID <input name="id"><br>Name <input name="name"><br>
+Department <input name="department"><br>Designation <input name="designation"><br><button>Show</button></form>
+<!-- File: employeeDetails.jsp -->
+<h2>Employee Details</h2>
+ID: ${param.id}<br>Name: ${param.name}<br>Department: ${param.department}<br>Designation: ${param.designation}
+Sample output: ID: 101; Name: Aman; Department: IT; Designation: Trainee
+How to run: Open employeeForm.html, fill in the fields and submit.
+Viva question: Why is EL simpler than scriptlets?
+Viva answer: It displays values using a simple expression instead of Java code.

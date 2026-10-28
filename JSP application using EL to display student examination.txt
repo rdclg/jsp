@@ -1,0 +1,16 @@
+Create a JSP application using EL to display student examination
+details, including roll number, name, subject and marks.
+Technology: JSP EL
+Where to write: `Web Pages/examForm.html` and `Web Pages/examDetails.jsp`
+Easy explanation: EL displays values from the submitted form without writing Java code in the result page.
+Code
+<!-- File: examForm.html -->
+<form action="examDetails.jsp">Roll no. <input name="roll"><br>Name <input name="name"><br>
+Subject <input name="subject"><br>Marks <input name="marks"><br><button>Show</button></form>
+<!-- File: examDetails.jsp -->
+<h2>Exam Details</h2>
+Roll number: ${param.roll}<br>Name: ${param.name}<br>Subject: ${param.subject}<br>Marks: ${param.marks}
+Sample output: Roll number: 12; Name: Riya; Subject: Science; Marks: 19
+How to run: Open examForm.html, enter data and submit.
+Viva question: What does `${param.marks}` display?
+Viva answer: The value submitted for the marks parameter.

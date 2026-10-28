@@ -1,0 +1,27 @@
+ Create a JPA-based employee management system to insert, display
+and update employee details.
+Technology: JPA CRUD
+Where to write: `src/java/ManagedEmployee.java` and `src/java/EmployeeManagerBean.java`
+Easy explanation: The service inserts employee data, displays all rows and updates salary by employee number.
+Code
+// File: ManagedEmployee.java
+import javax.persistence.*;
+@Entity public class ManagedEmployee {
+ @Id private int empNo; private String name; private double salary;
+ public ManagedEmployee(){} public ManagedEmployee(int e,String n,double s){empNo=e;name=n;salary=s;}
+ public int getEmpNo(){return empNo;} public String getName(){return name;} public double getSalary(){return salary;}
+ public void setName(String n){name=n;} public void setSalary(double s){salary=s;}
+}
+// File: EmployeeManagerBean.java
+import java.util.*; import javax.ejb.Stateless; import javax.persistence.*;
+@Stateless public class EmployeeManagerBean {
+ @PersistenceContext(unitName="AppPU") EntityManager em;
+ public void add(int e,String n,double s){em.persist(new ManagedEmployee(e,n,s));}
+ public List<ManagedEmployee> all(){return em.createQuery("SELECT e FROM ManagedEmployee e",ManagedEmployee.class).getResultList();}
+ public void updateSalary(int e,double s){ManagedEmployee x=em.find(ManagedEmployee.class,e);if(x!=null)x.setSalary(s);}
+}
+Sample output: Inserted employee 101, Aman, salary 30000
+Updated salary: 35000
+How to run: Configure `AppPU`; call `add`, `all` and `updateSalary`.
+Viva question: Which field identifies an employee here?
+Viva answer: `empNo`, the primary key

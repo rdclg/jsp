@@ -1,0 +1,36 @@
+Create a JPA inventory application.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/InventoryItem.java` and `src/java/InventoryItemBean.java`; configure `AppPU`
+Easy explanation: The entity represents one item in stock. JPA saves and retrieves inventory records.
+Code
+// File: InventoryItem.java
+import javax.persistence.*;
+@Entity
+public class InventoryItem {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String name;
+    private int quantity;
+    private double price;
+    public InventoryItem() { }
+    public InventoryItem(String n,int q,double p) { name=n; quantity=q; price=p; }
+    public Long getId(){return id;}
+    public String getName(){return name;}
+    public int getQuantity(){return quantity;}
+    public double getPrice(){return price;}
+}
+// File: InventoryItemBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class InventoryItemBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String n,int q,double p){ em.persist(new InventoryItem(n,q,p)); }
+    public List<InventoryItem> all(){ return em.createQuery("SELECT i FROM InventoryItem i",InventoryItem.class).getResultList(); }
+Page 38
+Java Enterprise QB - Easy Code, Output & Viva
+}
+Sample output: Saved product: Notebook, quantity 20, price 40.0.
+How to run: Create `InventoryItem.java` and `InventoryItemBean.java`; configure `AppPU`, then call `save()` and `all()`.
+Viva question: What is inventory?
+Viva answer: The list of products or goods a shop has in stock.

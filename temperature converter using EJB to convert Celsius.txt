@@ -1,0 +1,17 @@
+Develop a temperature converter using EJB to convert Celsius to
+Fahrenheit.
+Technology: EJB Stateless Bean
+Where to write: `src/java/TemperatureBean.java`
+Easy explanation: The formula is Fahrenheit = Celsius x 9/5 + 32.
+Code
+import javax.ejb.Stateless;
+@Stateless
+public class TemperatureBean {
+    public double toFahrenheit(double celsius) {
+        return (celsius * 9.0 / 5.0) + 32.0;
+    }
+}
+Sample output: 25 Celsius -> 77.0 Fahrenheit
+How to run: Deploy and call `temperatureBean.toFahrenheit(25)` from a servlet or client.
+Viva question: What is the Celsius-to-Fahrenheit formula?
+Viva answer: F = (C x 9/5) + 32

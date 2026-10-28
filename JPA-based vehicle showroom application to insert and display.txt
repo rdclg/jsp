@@ -1,0 +1,33 @@
+ Create a JPA-based vehicle showroom application to insert and display
+vehicle ID, model name and price.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/Vehicle.java` and `src/java/VehicleBean.java`; configure `AppPU`
+Easy explanation: The vehicle ID is generated, and model name and price are saved.
+Code
+// File: Vehicle.java
+import javax.persistence.*;
+@Entity
+public class Vehicle {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String modelName;
+    private double price;
+    public Vehicle() { }
+    public Vehicle(String m,double p) { modelName=m; price=p; }
+    public Long getId(){return id;}
+    public String getModelName(){return modelName;}
+    public double getPrice(){return price;}
+}
+// File: VehicleBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class VehicleBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String m,double p){ em.persist(new Vehicle(m,p)); }
+    public List<Vehicle> all(){ return em.createQuery("SELECT v FROM Vehicle v",Vehicle.class).getResultList(); }
+}
+Sample output: Vehicle ID 1, model City, price 1200000.0.
+How to run: Create `Vehicle.java` and `VehicleBean.java`; configure `AppPU`; call save and all.
+Viva question: What kind of values are stored in a vehicle entity?
+Viva answer: Vehicle ID, model name and price

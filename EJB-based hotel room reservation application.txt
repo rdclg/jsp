@@ -1,0 +1,21 @@
+Develop an EJB-based hotel room reservation application that accepts
+guest details, room type, check-in date and number of nights.
+Technology: EJB Stateless Bean
+Where to write: `src/java/HotelReservationBean.java`
+Easy explanation: The bean accepts guest, room type, date and nights, validates simple values and returns a confirmation
+message.
+Code
+import javax.ejb.Stateless;
+@Stateless
+public class HotelReservationBean {
+    public String reserve(String guest, String roomType, String date, int nights) {
+        if (guest == null || guest.trim().isEmpty() || nights < 1)
+            return "Enter a guest name and at least one night";
+        return "Reservation confirmed for " + guest + ", " + roomType
+            + " room, check-in " + date + ", nights: " + nights;
+    }
+}
+Sample output: Reservation confirmed for Riya, Deluxe room, check-in 2026-11-01, nights: 2
+How to run: Deploy on Payara/GlassFish and call the method with four values from a servlet.
+Viva question: Why validate number of nights?
+Viva answer: To reject invalid values such as zero or negative nights

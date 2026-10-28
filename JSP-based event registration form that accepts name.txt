@@ -1,0 +1,23 @@
+Develop a JSP-based event registration form that accepts name, email,
+age and contact number, validates the input and displays the submitted details.
+Technology: JSP
+Where to write: `Web Pages/event.jsp`
+Easy explanation: The JSP validates the name, email and contact number, then prints the submitted values.
+Code
+<!-- File: event.jsp -->
+<%@ page contentType="text/html;charset=UTF-8" %>
+<% if ("POST".equalsIgnoreCase(request.getMethod())) {
+    String name=request.getParameter("name"), email=request.getParameter("email");
+    String age=request.getParameter("age"), phone=request.getParameter("phone");
+    if (name==null || name.trim().isEmpty() || email==null || !email.contains("@") || phone==null || phone.length()<10) {
+        out.println("Please enter a name, valid email and 10-digit contact number.");
+    } else {
+        out.println("Registration details received:<br>Name: "+name+"<br>Email: "+email+"<br>Age: "+age+"<br>Contact: "+phone);
+    }
+} %>
+<form method="post">Name: <input name="name" required><br>Email: <input name="email" type="email" required><br>
+Age: <input name="age" type="number" min="1" required><br>Contact: <input name="phone" required><br><button>Register</button></form>
+Sample output: Registration details received: Name: Riya; Email: riya@example.com; Age: 18; Contact: 9876543210
+How to run: Open `event.jsp`, enter details and submit.
+Viva question: What is server-side validation?
+Viva answer: Validation performed by the server after receiving submitted data.

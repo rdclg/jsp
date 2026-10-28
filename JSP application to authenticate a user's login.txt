@@ -1,0 +1,24 @@
+ Develop a JSP application to authenticate a user's login against a
+database.
+Technology: JSP + JDBC
+Where to write: `Web Pages/dbLogin.jsp`; MySQL table `users`
+Easy explanation: The JSP searches for a matching username and password. Use hashed passwords in real applications;
+this simple form is only for learning.
+Code
+<!-- File: dbLogin.jsp. Create users(username,password) and insert a test user. -->
+<%@ page import="java.sql.*" %>
+<% if ("POST".equalsIgnoreCase(request.getMethod())) {
+    try (Connection c=app.DB.getConnection();
+         PreparedStatement p=c.prepareStatement("SELECT username FROM users WHERE username=? AND password=?")) {
+        p.setString(1,request.getParameter("username")); p.setString(2,request.getParameter("password"));
+        try (ResultSet r=p.executeQuery()) {
+            if (r.next()) out.println("Login successful. Hello " + r.getString(1));
+            else out.println("Login failed");
+        }
+    } catch(Exception e) { out.println("Database error: "+e.getMessage()); }
+} %>
+<form method="post">Username: <input name="username"><br>Password: <input name="password" type="password"><br><button>Login</button></form>
+Sample output: Login successful. Hello student
+How to run: Create the users table and insert a test row, then open `dbLogin.jsp`.
+Viva question: Why should passwords not be stored as plain text?
+Viva answer: If the database leaks, plain-text passwords can be read directly.

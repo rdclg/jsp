@@ -1,0 +1,17 @@
+Create a JSP application using EL to display flight booking details,
+including passenger name, flight number, destination and ticket price.
+Technology: JSP EL
+Where to write: `Web Pages/flightForm.html` and `Web Pages/flight.jsp`
+Easy explanation: EL reads values sent by the form using `${param.fieldName}`.
+Code
+<!-- File: flightForm.html -->
+<form action="flight.jsp">Passenger <input name="passenger"><br>Flight no. <input name="flight"><br>
+Destination <input name="destination"><br>Ticket price <input name="price"><br><button>Show</button></form>
+<!-- File: flight.jsp -->
+<h2>Flight Booking</h2>
+Passenger: ${param.passenger}<br>Flight number: ${param.flight}<br>
+Destination: ${param.destination}<br>Ticket price: Rs. ${param.price}
+Sample output: Passenger: Riya; Flight number: AI101; Destination: Delhi; Ticket price: Rs. 4500
+How to run: Open flightForm.html, enter values and submit.
+Viva question: How does EL read a URL parameter?
+Viva answer: Use `${param.nameOfParameter}`

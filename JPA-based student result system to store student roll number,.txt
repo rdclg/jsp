@@ -1,0 +1,27 @@
+ Create a JPA-based student result system to store student roll number,
+name, subject and marks.
+Technology: JPA Entity + Query
+Where to write: `src/java/StudentResult.java` and a service bean using `@PersistenceContext`
+Easy explanation: The entity stores roll number, student name, subject and marks. A JPQL query retrieves saved results.
+Code
+// File: StudentResult.java
+import javax.persistence.*;
+@Entity public class StudentResult {
+ @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+ private int rollNo; private String name; private String subject; private int marks;
+ public StudentResult(){}
+ public StudentResult(int r,String n,String s,int m){rollNo=r;name=n;subject=s;marks=m;}
+ public Long getId(){return id;} public int getRollNo(){return rollNo;} public String getName(){return name;}
+ public String getSubject(){return subject;} public int getMarks(){return marks;}
+}
+// File: StudentResultBean.java
+import java.util.*; import javax.ejb.Stateless; import javax.persistence.*;
+@Stateless public class StudentResultBean {
+ @PersistenceContext(unitName="AppPU") EntityManager em;
+ public void add(int roll,String name,String subject,int marks){em.persist(new StudentResult(roll,name,subject,marks));}
+ public List<StudentResult> all(){return em.createQuery("SELECT r FROM StudentResult r",StudentResult.class).getResultList();}
+}
+Sample output: Roll 12 | Riya | Science | 19
+How to run: Configure `AppPU`, create a service bean, persist a StudentResult and run the SELECT query.
+Viva question: What is JPQL?
+Viva answer: Java Persistence Query Language; it queries entity objects

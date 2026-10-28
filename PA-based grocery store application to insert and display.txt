@@ -1,0 +1,35 @@
+Create a JPA-based grocery store application to insert and display
+product ID, name, quantity and price.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/GroceryProduct.java` and `src/java/GroceryProductBean.java`; configure `AppPU`
+Easy explanation: The generated `id` is the product ID. The other fields store the name, quantity and price.
+Code
+// File: GroceryProduct.java
+import javax.persistence.*;
+@Entity
+public class GroceryProduct {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String productName;
+    private int quantity;
+    private double price;
+    public GroceryProduct() { }
+    public GroceryProduct(String n,int q,double p) { productName=n; quantity=q; price=p; }
+    public Long getId(){return id;}
+    public String getProductName(){return productName;}
+    public int getQuantity(){return quantity;}
+    public double getPrice(){return price;}
+}
+// File: GroceryProductBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class GroceryProductBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String n,int q,double p){ em.persist(new GroceryProduct(n,q,p)); }
+    public List<GroceryProduct> all(){ return em.createQuery("SELECT g FROM GroceryProduct g",GroceryProduct.class).getResultList(); }
+}
+Sample output: P01 (generated ID), Rice, 10, price 60.0.
+How to run: Create `GroceryProduct.java` and `GroceryProductBean.java`; configure `AppPU`; call save and all.
+Viva question: What does @GeneratedValue do?
+Viva answer: It asks JPA to generate primary-key values automatically.

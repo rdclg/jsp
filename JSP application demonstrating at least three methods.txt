@@ -1,0 +1,24 @@
+Create a JSP application demonstrating at least three methods of four
+implicit objects.
+Technology: JSP
+Where to write: `Web Pages/implicitMethods.jsp`
+Easy explanation: This page demonstrates methods of four implicit objects: request, session, application and out.
+Code
+<!-- File: implicitMethods.jsp -->
+<%@ page contentType="text/html;charset=UTF-8" %>
+<h2>Methods of four implicit objects</h2>
+Request method: <%= request.getMethod() %><br>
+Request URI: <%= request.getRequestURI() %><br>
+Server name: <%= request.getServerName() %><br>
+Session ID: <%= session.getId() %><br>
+Session creation time: <%= session.getCreationTime() %><br>
+Last access time: <%= session.getLastAccessedTime() %><br>
+App server: <%= application.getServerInfo() %><br>
+App context: <%= application.getContextPath() %><br>
+Context name: <%= application.getServletContextName() %><br>
+<% out.print("out.print() works.<br>"); out.println("out.println() works.<br>"); out.flush(); %>
+Sample output: Request method: GET; Request URI: /YourProject/implicitMethods.jsp; Session ID: generated value;
+Application details and three out messages are displayed.
+How to run: Run `implicitMethods.jsp`.
+Viva question: What does `session.getId()` return?
+Viva answer: The unique ID for the current session.

@@ -1,0 +1,21 @@
+ Develop an electricity bill calculator using EJB that calculates the bill
+from units consumed.
+Technology: EJB Stateless Bean
+Where to write: `src/java/ElectricityBillBean.java`
+Easy explanation: The bean calculates a bill using example slab rates. Replace the sample rates with the rates given by your
+teacher or electricity provider.
+Code
+import javax.ejb.Stateless;
+@Stateless
+public class ElectricityBillBean {
+    public double bill(int units) {
+        if (units < 0) throw new IllegalArgumentException("Units cannot be negative");
+        if (units <= 100) return units * 3.0;
+        if (units <= 300) return 100*3.0 + (units-100)*5.0;
+        return 100*3.0 + 200*5.0 + (units-300)*7.0;
+    }
+}
+Sample output: Units 150 -> Rs. 550.0 (using the demo slab rates)
+How to run: Deploy and call `electricityBillBean.bill(150)` from a servlet or client.
+Viva question: What is the purpose of the bill() method?
+Viva answer: It calculates the bill from the number of units.

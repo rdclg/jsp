@@ -1,0 +1,30 @@
+ Create an HTML form with employee number, name, age, designation
+and salary; submit the data to a JSP page that updates the matching employee record.
+Technology: HTML + JSP + JDBC
+Where to write: `Web Pages/empUpdate.html` and `Web Pages/empUpdate.jsp`; emp table must contain `age` and
+`designation`
+Easy explanation: The JSP runs an UPDATE query using employee number as the matching key.
+Code
+<!-- File: empUpdate.html -->
+<form action="empUpdate.jsp" method="post">
+  Employee No: <input name="empno" type="number" required><br>
+  Name: <input name="ename" required><br>
+  Age: <input name="age" type="number" required><br>
+  Designation: <input name="designation" required><br>
+  Salary: <input name="salary" type="number" step="0.01" required><br><button>Update</button>
+</form>
+<!-- File: empUpdate.jsp. Add age and designation columns to emp table. -->
+<%@ page import="java.sql.*" %>
+<%
+try (Connection c=app.DB.getConnection();
+     PreparedStatement p=c.prepareStatement("UPDATE emp SET ename=?, age=?, designation=?, salary=? WHERE empno=?")) {
+    p.setString(1,request.getParameter("ename")); p.setInt(2,Integer.parseInt(request.getParameter("age")));
+    p.setString(3,request.getParameter("designation")); p.setDouble(4,Double.parseDouble(request.getParameter("salary")));
+    p.setInt(5,Integer.parseInt(request.getParameter("empno")));
+    int rows=p.executeUpdate(); out.println(rows==1 ? "Employee updated" : "Employee number not found");
+} catch(Exception e) { out.println("Error: "+e.getMessage()); }
+%>
+Sample output: Employee updated
+How to run: Add the required columns to `emp`, create the DB helper, and open `empUpdate.html`.
+Viva question: What does UPDATE do?
+Viva answer: It changes data in existing database rows

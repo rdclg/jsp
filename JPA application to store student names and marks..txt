@@ -1,0 +1,32 @@
+ Create a JPA application to store student names and marks.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/StudentMarkRecord.java` and `src/java/StudentMarkRecordBean.java`; configure `AppPU`
+Easy explanation: The entity stores a student’s name and marks.
+Code
+// File: StudentMarkRecord.java
+import javax.persistence.*;
+@Entity
+public class StudentMarkRecord {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String name;
+    private int marks;
+    public StudentMarkRecord() { }
+    public StudentMarkRecord(String n,int m) { name=n; marks=m; }
+    public Long getId(){return id;}
+    public String getName(){return name;}
+    public int getMarks(){return marks;}
+}
+// File: StudentMarkRecordBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class StudentMarkRecordBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String n,int m){ em.persist(new StudentMarkRecord(n,m)); }
+    public List<StudentMarkRecord> all(){ return em.createQuery("SELECT s FROM StudentMarkRecord s",StudentMarkRecord.class).getResultList(); }
+}
+Sample output: Saved: Riya, marks 19.
+How to run: Create `StudentMarkRecord.java` and `StudentMarkRecordBean.java`; configure `AppPU`; call save and all.
+Viva question: What is a database record?
+Viva answer: One row of stored information.

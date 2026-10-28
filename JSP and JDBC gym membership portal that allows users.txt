@@ -1,0 +1,29 @@
+ Create a JSP and JDBC gym membership portal that allows users to
+register and log in using database records.
+Technology: JSP + JDBC
+Where to write: `Web Pages/gymRegister.jsp`, `Web Pages/gymLogin.jsp`; table `gym(username,password)`
+Easy explanation: One JSP adds a member to the database and another checks whether the credentials match a saved row.
+Code
+<!-- File: gymRegister.jsp -->
+<%@ page import="java.sql.*" %>
+<% if ("POST".equalsIgnoreCase(request.getMethod())) {
+  try(Connection c=app.DB.getConnection(); PreparedStatement p=c.prepareStatement("INSERT INTO gym(username,password) VALUES(?,?)")) {
+    p.setString(1,request.getParameter("username")); p.setString(2,request.getParameter("password"));
+    p.executeUpdate(); out.println("Gym registration complete");
+  } catch(Exception e) { out.println("Error: "+e.getMessage()); }
+} %>
+<form method="post">Username: <input name="username"><br>Password: <input name="password" type="password"><button>Register</button></form>
+<!-- File: gymLogin.jsp -->
+<%@ page import="java.sql.*" %>
+<% if ("POST".equalsIgnoreCase(request.getMethod())) {
+  try(Connection c=app.DB.getConnection(); PreparedStatement p=c.prepareStatement("SELECT username FROM gym WHERE username=? AND password=?")) {
+    p.setString(1,request.getParameter("username")); p.setString(2,request.getParameter("password"));
+    try(ResultSet r=p.executeQuery()) { out.println(r.next()?"Login successful":"Login failed"); }
+  } catch(Exception e) { out.println("Error: "+e.getMessage()); }
+} %>
+<form method="post">Username: <input name="username"><br>Password: <input name="password" type="password"><button>Login</button></form>
+Sample output: Gym registration complete
+Login successful
+How to run: Create table `gym`, configure `app.DB`, register a test member, then log in.
+Viva question: What does JDBC connect to?
+Viva answer: A database from a Java application.

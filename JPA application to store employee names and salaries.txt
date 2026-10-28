@@ -1,0 +1,32 @@
+Create a JPA application to store employee names and salaries.
+Technology: JPA Entity + EJB service
+Where to write: `src/java/Employee.java` and `src/java/EmployeeBean.java`; configure `AppPU`
+Easy explanation: JPA maps each Employee object to a row containing name and salary.
+Code
+// File: Employee.java
+import javax.persistence.*;
+@Entity
+public class Employee {
+    @Id @GeneratedValue(strategy=GenerationType.AUTO) private Long id;
+    private String name;
+    private double salary;
+    public Employee() { }
+    public Employee(String n,double s) { name=n; salary=s; }
+    public Long getId(){return id;}
+    public String getName(){return name;}
+    public double getSalary(){return salary;}
+}
+// File: EmployeeBean.java
+import java.util.*;
+import javax.ejb.Stateless;
+import javax.persistence.*;
+@Stateless
+public class EmployeeBean {
+    @PersistenceContext(unitName="AppPU") private EntityManager em;
+    public void save(String n,double s){ em.persist(new Employee(n,s)); }
+    public List<Employee> all(){ return em.createQuery("SELECT e FROM Employee e",Employee.class).getResultList(); }
+}
+Sample output: Saved: Aman, salary 30000.0.
+How to run: Create `Employee.java` and `EmployeeBean.java`; configure `AppPU`, then call save and all.
+Viva question: What does @Entity mean?
+Viva answer: It marks a class as a database entity.
